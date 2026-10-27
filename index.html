@@ -3739,16 +3739,21 @@ body.in-app #section-emitents .emitent-table td.emit-label-cell{
   body.in-app #section-market #addBondBtn{
     flex:1 1 100%;width:100%;justify-content:center}
   body.in-app #section-market .market-phone-tool-row{
-    display:flex;align-items:center;gap:8px;width:100%;min-width:0;margin:0 0 var(--space-4)}
-  body.in-app #section-market .market-phone-tool-row #toc{
-    flex:1 1 auto;width:auto!important;min-width:0;margin:0!important}
+    display:flex;align-items:center;justify-content:flex-start;gap:8px;width:100%;margin:0 0 var(--space-4)}
   body.in-app #section-market .market-phone-tool-row #marketCriteriaWrap{
     display:flex;flex:0 0 auto;width:auto;margin:0}
   body.in-app #section-market .market-phone-tool-row .market-icon-btn,
   body.in-app #section-market .market-phone-tool-row .market-search-clear-btn,
   body.in-app #section-market .market-phone-tool-row #exportExcelBtn{flex:0 0 var(--ds-btn-h);margin:0!important}
+  body.in-app #section-market .market-phone-tool-row .market-search-clear-btn,
+  body.in-app #section-market .market-phone-tool-row .market-criteria-btn{
+    background:#fff!important;color:var(--n-700)!important;border:1px solid var(--line)!important}
+  body.in-app #section-market .market-phone-tool-row #exportExcelBtn{
+    background:var(--ds-button-dark-bg)!important;border-color:var(--ds-button-dark-bg)!important;color:#fff!important}
   body.in-app #section-portfolio .pb-group-h,
-  body.in-app #section-portfolio .pb-group-h-static{justify-content:flex-start!important}
+  body.in-app #section-portfolio .pb-group-h-static{justify-content:flex-start!important;align-items:center!important}
+  body.in-app #section-portfolio .pb-group-h::before,
+  body.in-app #section-portfolio .pb-group-title{align-self:center}
   body.in-app #section-portfolio .pb-group-title{flex:0 1 auto;text-align:left}
   body.in-app #section-portfolio .pb-bond-table-wrap{overflow-x:auto}
   body.in-app #section-portfolio .pb-bond-table-select,
@@ -4229,10 +4234,13 @@ function normalizeRange(st){
 function clampPanWindow(st){
   if(!st)return;
   const b=st.base;
-  const xLeft=b&&b.length>=4?Math.max(0,b[0]):0;
-  const xRight=b&&b.length>=4?Math.max(xLeft+MIN_RANGE,b[1]):Infinity;
+  const xLeftBase=b&&b.length>=4?Math.max(0,b[0]):0;
+  const xLeft=isFinite(st.manualXLeft)?Math.min(xLeftBase,st.manualXLeft):xLeftBase;
+  const xRightBase=b&&b.length>=4?Math.max(xLeft+MIN_RANGE,b[1]):Infinity;
+  const xRight=isFinite(st.manualXRight)?Math.max(xRightBase,st.manualXRight):xRightBase;
   const yFloor=0;
-  const yTop=isFinite(st.yTop)?st.yTop:(b&&b.length>=4&&b[3]>0?b[3]:Infinity);
+  const yTopBase=isFinite(st.yTop)?st.yTop:(b&&b.length>=4&&b[3]>0?b[3]:Infinity);
+  const yTop=isFinite(st.manualYTop)?Math.max(yTopBase,st.manualYTop):yTopBase;
   if(isFinite(st.x0)&&st.x0<xLeft){const sh=xLeft-st.x0;st.x0+=sh;st.x1+=sh;}
   if(isFinite(xRight)&&isFinite(st.x1)&&st.x1>xRight){const sh=st.x1-xRight;st.x0-=sh;st.x1-=sh;}
   if(isFinite(st.x0)&&st.x0<xLeft)st.x0=xLeft;
@@ -4512,11 +4520,11 @@ function openAddBondForm(show){
   if(willShow){abfMsg('',true);const nm=document.getElementById('abfName');if(nm)setTimeout(function(){nm.focus();},50);}
   else if(isOpen&&trigger)setTimeout(function(){trigger.focus();},0);
 }
-function readAddBondForm(){const g=id=>document.getElementById(id);const name=(g('abfName').value||'').trim();const yv=parseNumber(g('abfYield').value);const dv=parseNumber(g('abfDur').value);const chartId=g('abfChart').value;const miss=[];if(!name)miss.push('Название');if(!isFinite(yv))miss.push('Доходность');if(!isFinite(dv))miss.push('Дюрация / срок');if(!chartId)miss.push('Карта');if(miss.length){abfMsg('Заполните обязательные поля: '+miss.join(', ')+'.',false);return null;}return {name,isin:'',x:dv,y:yv,chartId};}
-function ensurePointVisible(id,x,y){const st=state[id];if(!st)return;const padX=Math.abs(st.x1-st.x0)*0.06||0.3,padY=Math.abs(st.y1-st.y0)*0.06||0.3;if(x<st.x0)st.x0=x-padX;if(x>st.x1)st.x1=x+padX;if(y<st.y0)st.y0=y-padY;if(y>st.y1)st.y1=y+padY;normalizeRange(st);}
+function readAddBondForm(){const g=id=>document.getElementById(id);const name=(g('abfName').value||'').trim();const yv=parseNumber(g('abfYield').value);const dv=parseNumber(g('abfDur').value);const chartId=g('abfChart').value;const miss=[];if(!name)miss.push('Название');if(!isFinite(yv))miss.push('Доходность');if(!isFinite(dv))miss.push('Дюрация / срок');if(!chartId)miss.push('Карта');if(miss.length){abfMsg('Заполните обязательные поля: '+miss.join(', ')+'.',false);return null;}if(yv<0||dv<0){abfMsg('Введите положительное значение.',false);return null;}return {name,isin:'',x:dv,y:yv,chartId};}
+function ensurePointVisible(id,x,y){const st=state[id];if(!st||!isFinite(x)||!isFinite(y))return;if(!st._manualView)st._manualView={x0:st.x0,x1:st.x1,y0:st.y0,y1:st.y1,yTop:st.yTop};const w=st.x1-st.x0||1,h=st.y1-st.y0||1;const padX=Math.abs(w)*0.06||0.3,padY=Math.abs(h)*0.06||0.3;if(x>st.x1){st.x1=x+padX;st.x0=st.x1-w;}else if(x<st.x0){st.x0=Math.max(0,x-padX);st.x1=st.x0+w;}if(y>st.y1){st.y1=y+padY;st.y0=st.y1-h;}else if(y<st.y0){st.y0=Math.max(0,y-padY);st.y1=st.y0+h;}st.manualXLeft=0;st.manualXRight=Math.max(st.x1,x+padX);st.manualYTop=Math.max(isFinite(st.yTop)?st.yTop:0,st.y1);normalizeRange(st);}
 function scrollToChart(id){const el=document.getElementById(id);if(!el)return;const blk=(el.closest&&(el.closest('.chart-block')||el.closest('section')))||el;blk.scrollIntoView({behavior:'smooth',block:'center'});}
 function addManualBond(scrollToIt){const v=readAddBondForm();if(!v)return;if(!manualPoints[v.chartId])manualPoints[v.chartId]=[];manualPoints[v.chartId].push({name:v.name,isin:v.isin,x:v.x,y:v.y});if(state[v.chartId]){ensurePointVisible(v.chartId,v.x,v.y);renderChart(v.chartId);}else{refreshAll();}const cBtn=document.getElementById('clearManualBtn');if(cBtn)cBtn.style.display='inline-block';const message='Добавлено: «'+v.name+'» → карта «'+chartDisplayLabel(v.chartId)+'».';abfMsg(message,true);['abfName','abfYield','abfDur'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});if(scrollToIt){openAddBondForm(false);if(typeof showToast==='function')showToast(message,true);setTimeout(function(){scrollToChart(v.chartId);},80);}else{const nm=document.getElementById('abfName');if(nm)nm.focus();}}
-function clearManualBonds(){manualPoints={};const cBtn=document.getElementById('clearManualBtn');if(cBtn)cBtn.style.display='none';refreshAll();showToast('Добавленные облигации убраны с карт.',true);}
+function clearManualBonds(){Object.keys(state).forEach(function(id){var st=state[id],s=st&&st._manualView;if(!s)return;st.x0=s.x0;st.x1=s.x1;st.y0=s.y0;st.y1=s.y1;st.yTop=s.yTop;delete st._manualView;delete st.manualXLeft;delete st.manualXRight;delete st.manualYTop;});manualPoints={};const cBtn=document.getElementById('clearManualBtn');if(cBtn)cBtn.style.display='none';refreshAll();showToast('Добавленные облигации убраны с карт.',true);}
 function highlightSwaps(){const results=(typeof buildPortfolioAnalysisResults==='function')?buildPortfolioAnalysisResults():[];if(!results.length){showToast('Замен для подсветки не найдено. Сначала загрузите портфель и нажмите «Далее».',false);return;}replaceHL={port:new Set(results.map(r=>String(r.base.isin||''))),repl:new Set(results.map(r=>String(r.alt.isin||'')))};const lg=document.getElementById('swapLegend');if(lg)lg.style.display='flex';refreshAll();showToast('Подсвечено замен: '+results.length+'. Красное — в портфеле, зелёное — чем заменить.',true);}
 function finishAnalysis(){replaceHL=null;const lg=document.getElementById('swapLegend');if(lg)lg.style.display='none';const page=document.getElementById('portfolioAnalysisPage');if(page)page.classList.remove('active');refreshAll();}
 /* ===== Фильтр / сортировка / бенчмарк / нарезка осей (доработка) ===== */
@@ -10660,17 +10668,16 @@ window.__atonHostReady(pbInit);
     var clearBtn=document.getElementById('marketSearchClearBtn');
     var criteria=document.getElementById('marketCriteriaWrap');
     var excel=document.getElementById('exportExcelBtn');
+    if(row&&toc.parentNode===row)row.parentNode.insertBefore(toc, row);
     if(narrow){
       if(!row){
         row=document.createElement('div');
         row.id='marketPhoneToolRow';
         row.className='market-phone-tool-row';
-        toc.parentNode.insertBefore(row, toc);
       }
-      if(toc.parentNode!==row)row.appendChild(toc);
+      if(toc.nextSibling!==row)toc.parentNode.insertBefore(row, toc.nextSibling);
       [clearBtn,criteria,excel].forEach(function(el){if(el&&el.parentNode!==row)row.appendChild(el);});
     }else if(row){
-      if(toc.parentNode===row)row.parentNode.insertBefore(toc, row);
       if(excel)controls.appendChild(excel);
       if(criteria)controls.insertBefore(criteria, excel||null);
       if(clearBtn)controls.insertBefore(clearBtn, criteria||excel||null);
