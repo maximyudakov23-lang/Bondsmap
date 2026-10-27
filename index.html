@@ -2030,7 +2030,7 @@ body.in-app #portfolioMapPanel .pf-go-btn:hover{
 body.in-app #portfolioMapPanel .pf-reset-btn{
   height:36px!important;box-shadow:none!important
 }
-@media(max-width:700px){
+@media(max-width:1200px){
   #portfolioMapPanel{scroll-margin-top:72px}
   #portfolioMapPanel .pf-reset-btn{width:100%}
   #portfolioMapPanel .pf-table thead{display:none}
@@ -2049,6 +2049,15 @@ body.in-app #portfolioMapPanel .pf-reset-btn{
   #portfolioMapPanel .pf-table .pf-ccy-cell{grid-area:ccy}
   #portfolioMapPanel .pf-table .pf-qual-cell{grid-area:qual}
   #portfolioMapPanel .pf-table .pf-go-cell{grid-area:go;align-self:center;text-align:right}
+  #portfolioMapPanel .pf-table td.col-paper::before,
+  #portfolioMapPanel .pf-table td.isin-cell::before,
+  #portfolioMapPanel .pf-table td.pf-ccy-cell::before,
+  #portfolioMapPanel .pf-table td.pf-qual-cell::before{
+    display:block;margin:0 0 2px;color:var(--muted);font-size:11px;font-weight:600;line-height:1.2}
+  #portfolioMapPanel .pf-table td.col-paper::before{content:"Тикер"}
+  #portfolioMapPanel .pf-table td.isin-cell::before{content:"ISIN"}
+  #portfolioMapPanel .pf-table td.pf-ccy-cell::before{content:"Валюта"}
+  #portfolioMapPanel .pf-table td.pf-qual-cell::before{content:"Для квалифицированных инвесторов"}
 }
 @media(max-width:480px){
   .chart-portfolio-back-label{display:none}
@@ -3722,6 +3731,67 @@ body.in-app #section-emitents .emitent-table td.emit-label-cell{
   white-space:normal!important;overflow-wrap:normal!important;word-break:normal!important
 }
 
+/* Телефон и планшет: кнопки карты, конструктор, подписи таблиц. На широком экране эти правила не действуют. */
+@media(max-width:1200px){
+  body.in-app #section-market .market-search-mobile-only{flex-basis:100%;min-width:0;width:100%}
+  body.in-app #section-market #portfolioUploadBtn,
+  body.in-app #section-market #portfolioAnalysisBtn,
+  body.in-app #section-market #addBondBtn{
+    flex:1 1 100%;width:100%;justify-content:center}
+  body.in-app #section-market .market-phone-tool-row{
+    display:flex;align-items:center;gap:8px;width:100%;min-width:0;margin:0 0 var(--space-4)}
+  body.in-app #section-market .market-phone-tool-row #toc{
+    flex:1 1 auto;width:auto!important;min-width:0;margin:0!important}
+  body.in-app #section-market .market-phone-tool-row #marketCriteriaWrap{
+    display:flex;flex:0 0 auto;width:auto;margin:0}
+  body.in-app #section-market .market-phone-tool-row .market-icon-btn,
+  body.in-app #section-market .market-phone-tool-row .market-search-clear-btn,
+  body.in-app #section-market .market-phone-tool-row #exportExcelBtn{flex:0 0 var(--ds-btn-h);margin:0!important}
+  body.in-app #section-portfolio .pb-group-h,
+  body.in-app #section-portfolio .pb-group-h-static{justify-content:flex-start!important}
+  body.in-app #section-portfolio .pb-group-title{flex:0 1 auto;text-align:left}
+  body.in-app #section-portfolio .pb-bond-table-wrap{overflow-x:auto}
+  body.in-app #section-portfolio .pb-bond-table-select,
+  body.in-app #section-portfolio .pb-bond-table-weights{
+    table-layout:auto!important;width:max-content!important;min-width:100%!important}
+  body.in-app #section-portfolio .pb-bond-table-select th,
+  body.in-app #section-portfolio .pb-bond-table-select td,
+  body.in-app #section-portfolio .pb-bond-table-weights th,
+  body.in-app #section-portfolio .pb-bond-table-weights td{width:auto!important}
+  body.in-app #section-portfolio .pb-bond-table th{
+    overflow:visible;white-space:normal!important;
+    overflow-wrap:normal!important;word-break:normal!important;
+    hyphens:manual!important;-webkit-hyphens:manual!important;min-width:4.8em}
+  body.in-app #section-portfolio .pb-bond-table-select th:nth-child(3),
+  body.in-app #section-portfolio .pb-bond-table-select th:nth-child(7),
+  body.in-app #section-portfolio .pb-bond-table-weights th:nth-child(3){min-width:5.6em}
+  body.in-app #section-portfolio .pb-bond-table-select th:nth-child(4),
+  body.in-app #section-portfolio .pb-bond-table-select th:nth-child(5),
+  body.in-app #section-portfolio .pb-bond-table-select th:nth-child(6),
+  body.in-app #section-portfolio .pb-bond-table-weights th:nth-child(4){min-width:9.2em}
+  body.in-app .focus-table-wrap,
+  body.in-app #section-market .table-wrap{overflow-x:auto}
+  body.in-app .focus-table,
+  body.in-app #section-market .bond-table{table-layout:auto!important;width:max-content!important;min-width:100%!important}
+  body.in-app .focus-table th .th-label,
+  body.in-app .bond-table thead th .th-label,
+  body.in-app #section-portfolio .pb-rtable th{
+    max-width:none!important;min-width:8.2em!important;
+    overflow-wrap:normal!important;word-break:normal!important;
+    hyphens:manual!important;-webkit-hyphens:manual!important}
+}
+/* Заголовки таблиц на любом экране: перенос по словам, без обрыва одной буквы. */
+body.in-app .focus-table th,
+body.in-app .focus-table th .th-label,
+body.in-app .bond-table thead th,
+body.in-app .bond-table thead th .th-label,
+body.in-app #section-portfolio .pb-bond-table th,
+body.in-app #section-portfolio .pb-rtable th{
+  overflow-wrap:normal!important;word-break:normal!important;
+  hyphens:manual!important;-webkit-hyphens:manual!important}
+
+
+
 
 </style>
 </head>
@@ -4641,12 +4711,12 @@ function renderChart(id){
   svg.style.setProperty('--mk',String(labelScale));
   let out=`<rect x="0" y="0" width="${W}" height="${H}" fill="#fff"/>`;
   out+=`<defs><clipPath id="${clipId}"><rect x="${L}" y="${T}" width="${PW}" height="${PH}"/></clipPath></defs>`;
+  let axisText='',grid='';
   const _xt=axisTicks(st.x0,st.x1);
-  _xt.ticks.forEach(xv=>{const px=sx(xv);out+=`<line x1="${px}" y1="${T}" x2="${px}" y2="${T+PH}" stroke="#DDD8EA"/><text x="${px}" y="${T+PH+22}" text-anchor="middle" font-size="${tickFont}">${tickLabel(xv,_xt.step)}</text>`;});
+  _xt.ticks.forEach(xv=>{const px=sx(xv);grid+=`<line x1="${px}" y1="${T}" x2="${px}" y2="${T+PH}" stroke="#DDD8EA"/>`;axisText+=`<text x="${px}" y="${T+PH+22}" text-anchor="middle" font-size="${tickFont}">${tickLabel(xv,_xt.step)}</text>`;});
   const _yt=axisTicks(st.y0,st.y1);
-  _yt.ticks.forEach(yv=>{const py=sy(yv);out+=`<line x1="${L}" y1="${py}" x2="${L+PW}" y2="${py}" stroke="#DDD8EA"/><text x="${L-12}" y="${py+4}" text-anchor="end" font-size="${tickFont}">${tickLabel(yv,_yt.step)}</text>`;});
-  out+=`<rect x="${L}" y="${T}" width="${PW}" height="${PH}" fill="none" stroke="#aaa2bf"/><text x="${L+PW/2}" y="${H-6}" text-anchor="middle" font-size="${axisFont}">${esc(ch.xLabel)}</text><text transform="translate(16 ${T+PH/2}) rotate(-90)" text-anchor="middle" font-size="${axisFont}">${esc(ch.yLabel)}</text>`;
-  out+=`<g clip-path="url(#${clipId})">`;
+  _yt.ticks.forEach(yv=>{const py=sy(yv);grid+=`<line x1="${L}" y1="${py}" x2="${L+PW}" y2="${py}" stroke="#DDD8EA"/>`;axisText+=`<text x="${L-12}" y="${py+4}" text-anchor="end" font-size="${tickFont}">${tickLabel(yv,_yt.step)}</text>`;});
+  out+=`<g clip-path="url(#${clipId})"><g class="plot-live">${grid}`;
   const _curveIssuers=(getView(id).curves||[]).filter(Boolean);
   if(_curveIssuers.length){
     _curveIssuers.forEach(function(issuer,ci){
@@ -4703,7 +4773,9 @@ function renderChart(id){
     const lines=lp.lines&&lp.lines.length?lp.lines:[item.text];
     out+=`<text class="label bench-label" x="${lp.x.toFixed(1)}" y="${lp.y.toFixed(1)}" text-anchor="${lp.anchor}" font-size="${benchFont.toFixed(1)}" fill="#2563eb" opacity="0.92">${svgLabelTspans(lines,lp.x,benchFont)}</text>`;
   });
-  out+=`</g>`;
+  out+=`</g></g>`;
+  out+=axisText;
+  out+=`<rect x="${L}" y="${T}" width="${PW}" height="${PH}" fill="none" stroke="#aaa2bf"/><text x="${L+PW/2}" y="${H-6}" text-anchor="middle" font-size="${axisFont}">${esc(ch.xLabel)}</text><text transform="translate(16 ${T+PH/2}) rotate(-90)" text-anchor="middle" font-size="${axisFont}">${esc(ch.yLabel)}</text>`;
   svg.innerHTML=out;
   svg.style.setProperty('--mk',String(labelScale));
   svg.classList.toggle('zoom-mode',st.mode==='zoom');
@@ -4816,15 +4888,26 @@ function attachSvgEvents(id){var _sg=document.getElementById(id);if(_sg){if(_sg.
   const startPoint=e=>clampPlotPoint(svgPoint(svg,e));
   let touchBox=null;
   const touchPoint=t=>{const r=touchBox||svg.getBoundingClientRect();return {x:(t.clientX-r.left)/Math.max(1,r.width)*CHART_DIM.W,y:(t.clientY-r.top)/Math.max(1,r.height)*CHART_DIM.H};};
-  let renderPending=false;
-  const scheduleRender=()=>{if(renderPending)return;renderPending=true;requestAnimationFrame(()=>{renderPending=false;renderChart(id);});};
-  const applyPan=(from,to,mult=1)=>{
-    const st=state[id]; const dx=(to.x-from.x)*mult,dy=(to.y-from.y)*mult;
-    const rx=st.x1-st.x0, ry=st.y1-st.y0;
-    st.x0-=dx/CHART_DIM.PW*rx; st.x1-=dx/CHART_DIM.PW*rx;
-    st.y0+=dy/CHART_DIM.PH*ry; st.y1+=dy/CHART_DIM.PH*ry;
-    normalizeRange(st);
-    scheduleRender();
+  let glide=null;
+  const armGlide=()=>{if(glide)return;const st=state[id];glide={base:{x0:st.x0,x1:st.x1,y0:st.y0,y1:st.y1}};};
+  const showGlidePan=()=>{
+    const g=svg.querySelector('.plot-live'); if(!g||!glide)return;
+    const st=state[id],b=glide.base;
+    const rx=b.x1-b.x0||1, ry=b.y1-b.y0||1;
+    const px=-(st.x0-b.x0)/rx*CHART_DIM.PW;
+    const py=(st.y0-b.y0)/ry*CHART_DIM.PH;
+    g.setAttribute('transform','translate('+px.toFixed(2)+','+py.toFixed(2)+')');
+  };
+  const showGlidePinch=(pinchState,p1,p2)=>{
+    const g=svg.querySelector('.plot-live'); if(!g||!pinchState||!p1||!p2)return;
+    const s=distance(p1,p2)/Math.max(8,pinchState.dist);
+    const c=clampPlotPoint(midpoint(p1,p2));
+    g.setAttribute('transform','translate('+c.x.toFixed(2)+','+c.y.toFixed(2)+') scale('+s.toFixed(4)+') translate('+(-c.x).toFixed(2)+','+(-c.y).toFixed(2)+')');
+  };
+  const applyPan=(from,to)=>{
+    armGlide();
+    commitPan(from,to);
+    showGlidePan();
   };
   const applyPinch=(pinchState,p1,p2)=>{
     const st=state[id],base=pinchState.state,center=clampPlotPoint(midpoint(p1,p2));
@@ -4833,7 +4916,6 @@ function attachSvgEvents(id){var _sg=document.getElementById(id);if(_sg){if(_sg.
     const xFrac=(center.x-CHART_DIM.L)/CHART_DIM.PW, yFrac=(center.y-CHART_DIM.T)/CHART_DIM.PH;
     const xv=xFromPlot(center.x,st), yv=yFromPlot(center.y,st);
     setRangeAround(st,xv,yv,xFrac,yFrac,k,k);
-    scheduleRender();
   };
   const finishZoom=(d)=>{
     if(!d||!d.moved)return;
@@ -4860,8 +4942,9 @@ function attachSvgEvents(id){var _sg=document.getElementById(id);if(_sg){if(_sg.
     removeSelection(svg); closePointPopup();
     if(pointers.size===2){
       const pts=Array.from(pointers.values());
+      if(glide){glide=null;renderChart(id);}
       const st=state[id];
-      pinch={dist:Math.max(8,distance(pts[0],pts[1])),state:{x0:st.x0,x1:st.x1,y0:st.y0,y1:st.y1}};
+      pinch={dist:Math.max(8,distance(pts[0],pts[1])),state:{x0:st.x0,x1:st.x1,y0:st.y0,y1:st.y1},p1:pts[0],p2:pts[1]};
       drag=null; svg.classList.remove('panning');
     }else if(pointers.size===1){
       drag={id:e.pointerId,start:p,last:p,current:p,moved:false,mode:state[id].mode,targetRow:chartRowFromElement(id,e.target),clientX:e.clientX,clientY:e.clientY};
@@ -4875,8 +4958,13 @@ function attachSvgEvents(id){var _sg=document.getElementById(id);if(_sg){if(_sg.
     const p=startPoint(e); pointers.set(e.pointerId,p);
     if(pointers.size>=2){
       const pts=Array.from(pointers.values()).slice(0,2);
-      if(!pinch){const st=state[id];pinch={dist:Math.max(8,distance(pts[0],pts[1])),state:{x0:st.x0,x1:st.x1,y0:st.y0,y1:st.y1}};}
-      applyPinch(pinch,pts[0],pts[1]);
+      if(!pinch){
+        if(glide){glide=null;renderChart(id);}
+        const st=state[id];
+        pinch={dist:Math.max(8,distance(pts[0],pts[1])),state:{x0:st.x0,x1:st.x1,y0:st.y0,y1:st.y1},p1:pts[0],p2:pts[1]};
+      }
+      pinch.p1=pts[0]; pinch.p2=pts[1];
+      showGlidePinch(pinch,pts[0],pts[1]);
       return;
     }
     if(!drag||drag.id!==e.pointerId)return;
@@ -4902,7 +4990,9 @@ function attachSvgEvents(id){var _sg=document.getElementById(id);if(_sg){if(_sg.
       }else if(state[id].mode==='zoom')finishZoom(drag);
       drag=null;
     }
+    if(pointers.size<2&&pinch&&pinch.p1&&pinch.p2)commitPinch(pinch,pinch.p1,pinch.p2);
     if(pointers.size<2)pinch=null;
+    glide=null;
     if(pointers.size===0)svg.classList.remove('panning');
     renderChart(id);
   }
@@ -4972,12 +5062,13 @@ function attachSvgEvents(id){var _sg=document.getElementById(id);if(_sg){if(_sg.
       const t1=e.touches[0], t2=e.touches[1];
       if(!touchPinch){
         clearPhoto();
+        if(glide){glide=null;renderChart(id);}
         touchBox=svg.getBoundingClientRect();
         beginPinch(t1,t2);
       }
       const p1=touchPoint(t1), p2=touchPoint(t2);
-      applyPinch(touchPinch,p1,p2);
       touchPinch.p1=p1; touchPinch.p2=p2;
+      showGlidePinch(touchPinch,p1,p2);
       return;
     }
     if(!touchDrag)return;
@@ -5112,6 +5203,17 @@ function tableRatingCell(row){
 }
 function tableNumberCell(v,cls){return tableCell(fmt2(v),('num'+(cls?' '+cls:'')).trim());}function tableIntCell(v,cls){return tableCell(fmtInt(v),('num'+(cls?' '+cls:'')).trim());}function tableVolCell(v,currency,cls){return tableCell(fmtVolumeDisplay(v,currency),('num'+(cls?' '+cls:'')).trim());}
 function tableIsinCell(row){const isin=String(row?.isin||'');return `<td class="isin-cell"><span>${esc(isin)}</span>${isin?`<button type="button" class="copy-isin-btn" data-isin="${esc(isin)}" title="Скопировать ISIN">⧉</button>`:''}</td>`;}
+function softHeader(s){
+  return esc(s||'')
+    .replace(/\//g,'/<wbr>')
+    .replace(/погашению/g,'пога&shy;шению')
+    .replace(/Доходность/g,'Доход&shy;ность')
+    .replace(/доходность/g,'доход&shy;ность')
+    .replace(/квалифицированных/g,'квалифици&shy;рованных')
+    .replace(/Скорректированная/g,'Скорректи&shy;рованная')
+    .replace(/Дюрация/g,'Дюра&shy;ция')
+    .replace(/дюрация/g,'дюра&shy;ция');
+}
 function thHeadInner(labelHtml,sortHtml,filterHtml){
   return '<span class="th-inner"><span class="th-label">'+labelHtml+'</span><span class="th-tools">'+(sortHtml||'')+(filterHtml||'')+'</span></span>';
 }
@@ -5126,7 +5228,7 @@ function updateTableHeaders(block,ch,id){
     th.className=('col-'+((def&&def.key)||ci)+numCls).trim();
     const sort=arrow?'<span class="th-sort" aria-hidden="true">'+arrow+'</span>':'';
     const filter=cid?'<button type="button" class="th-filter'+active+'" data-chart="'+cid+'" data-col="'+ci+'" title="Фильтр и сортировка">▾</button>':'';
-    th.innerHTML=thHeadInner(esc(labels[ci]||''),sort,filter);
+    th.innerHTML=thHeadInner(softHeader(labels[ci]||''),sort,filter);
   });
 }
 function renderTable(id){
@@ -6653,7 +6755,7 @@ function focusHasState(sk){const v=getFocusView(sk);return !!v.sort||Object.keys
 function focusIsinCell(row){const isin=String(row.ISIN||row.isin||row['ISIN']||'');return '<td class="isin-cell"><span>'+esc(isin)+'</span>'+(isin?'<button type="button" class="copy-isin-btn" data-isin="'+esc(isin)+'" title="Скопировать ISIN">⧉</button>':'')+'</td>';}
 function updateFocusClearBtns(){document.querySelectorAll('.focus-clear-btn').forEach(b=>{b.classList.toggle('show',focusHasState(b.dataset.sheet));});const g=document.getElementById('focusClearAllBtn');if(g)g.style.display=focusHasAnyState()?'inline-block':'none';}
 function renderFocusBlock(sk){const pack=FOCUS_LISTS[sk];const block=document.getElementById('focus-'+sk);if(!pack||!block)return;const hdr=(pack.headers||[]).filter(h=>String(h||'').trim());const thead=block.querySelector('thead'),tbody=block.querySelector('tbody');if(!thead||!tbody)return;const v=getFocusView(sk);
-  thead.innerHTML='<tr>'+hdr.map((h,ci)=>{const active=(v.filters[ci])?' active':'';const arrow=(v.sort&&v.sort.col===ci)?(v.sort.dir==='asc'?'▲':'▼'):'';const numCls=focusColType(h)==='num'?' num':'';const sort=arrow?'<span class="th-sort" aria-hidden="true">'+arrow+'</span>':'';const filter='<button type="button" class="th-filter'+active+'" data-focus-sheet="'+sk+'" data-col="'+ci+'" title="Фильтр и сортировка">▾</button>';return '<th class="col-f'+ci+numCls+'">'+thHeadInner(esc(focusHdrLabel(h,sk)),sort,filter)+'</th>';}).join('')+'</tr>';
+  thead.innerHTML='<tr>'+hdr.map((h,ci)=>{const active=(v.filters[ci])?' active':'';const arrow=(v.sort&&v.sort.col===ci)?(v.sort.dir==='asc'?'▲':'▼'):'';const numCls=focusColType(h)==='num'?' num':'';const sort=arrow?'<span class="th-sort" aria-hidden="true">'+arrow+'</span>':'';const filter='<button type="button" class="th-filter'+active+'" data-focus-sheet="'+sk+'" data-col="'+ci+'" title="Фильтр и сортировка">▾</button>';return '<th class="col-f'+ci+numCls+'">'+thHeadInner(softHeader(focusHdrLabel(h,sk)),sort,filter)+'</th>';}).join('')+'</tr>';
   const indices=computeFocusIndices(sk);block.hidden=!!normalizeSearchText(focusSearchQuery)&&!indices.length;
   tbody.innerHTML=indices.map(i=>{const row=pack.rows[i];const hit=focusRowMatchesSearch(row)?' class="focus-search-hit"':'';return '<tr'+hit+'>'+hdr.map(h=>{if(/isin/i.test(h))return focusIsinCell(row);const t=focusColType(h);const v=focusColDisp(row,h);const nk=normKey(h);const paper=nk==='тикер'||nk==='бумага'||nk==='название'||nk==='наименование';const cls=[t==='num'?'num':'',paper?'col-paper':'',(/рейтинг/i.test(h)&&rowHasPurpleRating(row))?'rating-purple':''].filter(Boolean);return '<td'+(cls.length?' class="'+cls.join(' ')+'"':'')+'>'+(paper?paperNameHtml(v):esc(v))+'</td>';}).join('')+'</tr>';}).join('');
   updateFocusClearBtns();
@@ -9418,7 +9520,7 @@ function pbRenderStep1(){
   html+='<div class="pb-stage-head"><div class="pb-stage-copy"><h2 class="pb-stage-title">Выберите бумаги</h2><p class="pb-stage-sub">Откройте нужные группы и добавьте выпуски в будущий портфель.</p></div><div class="pb-stage-counter" id="pbSelCountHead">0 бумаг</div></div><div class="pb-groups">';
   order.forEach(function(k,gi){var col=pbColor(k,gi);var bonds=byKey[k];
     var ax=pbTypeAxis(k);
-    html+='<section class="pb-group pb-collapsed" style="--pb-accent:'+col+'"><div class="pb-group-h" data-pb-group="'+ESC(k)+'" role="button" tabindex="0" aria-expanded="false"><span class="pb-group-identity"><span class="pb-group-title">'+ESC(k)+'</span></span><span class="pb-group-count">'+bonds.length+' выпусков</span></div><div class="pb-group-b"><div class="pb-bond-table-wrap"><table class="pb-bond-table pb-bond-table-select"><colgroup><col class="pb-col-name"><col class="pb-col-isin"><col class="pb-col-ccy"><col class="pb-col-yield"><col class="pb-col-dur"><col class="pb-col-qual"><col class="pb-col-act"></colgroup><thead><tr><th>Выпуск</th><th>ISIN</th><th>Валюта</th><th class="pb-num">'+ESC(ax.y)+'</th><th class="pb-num">'+ESC(ax.x)+'</th><th>Для квалифицированных инвесторов</th><th class="pb-action-cell">Выбор</th></tr></thead><tbody>';
+    html+='<section class="pb-group pb-collapsed" style="--pb-accent:'+col+'"><div class="pb-group-h" data-pb-group="'+ESC(k)+'" role="button" tabindex="0" aria-expanded="false"><span class="pb-group-identity"><span class="pb-group-title">'+ESC(k)+'</span></span><span class="pb-group-count">'+bonds.length+' выпусков</span></div><div class="pb-group-b"><div class="pb-bond-table-wrap"><table class="pb-bond-table pb-bond-table-select"><colgroup><col class="pb-col-name"><col class="pb-col-isin"><col class="pb-col-ccy"><col class="pb-col-yield"><col class="pb-col-dur"><col class="pb-col-qual"><col class="pb-col-act"></colgroup><thead><tr><th>Выпуск</th><th>ISIN</th><th>Валюта</th><th class="pb-num">'+softHeader(ax.y)+'</th><th class="pb-num">'+softHeader(ax.x)+'</th><th>Для квалифици&shy;рованных инвесторов</th><th class="pb-action-cell">Выбор</th></tr></thead><tbody>';
     bonds.forEach(function(b){var on=PB.sel[b.id]?' on':'';
       html+='<tr><td class="pb-name-cell">'+ESC(b.name)+'</td><td class="pb-isin-cell">'+ESC(b.isin||'—')+'</td><td>'+ESC(b.ccy)+'</td><td class="pb-num">'+ESC(b.yield||'—')+'</td><td class="pb-num">'+ESC(b.dur||'—')+'</td><td>'+ESC(pbQualDisp(b))+'</td><td class="pb-action-cell"><button type="button" class="pb-pick'+on+'" data-pick="'+ESC(b.id)+'" aria-pressed="'+(PB.sel[b.id]?'true':'false')+'" aria-label="Добавить или убрать '+ESC(b.name)+'" title="Добавить или убрать бумагу">'+pbPickIcon(!!PB.sel[b.id])+'</button></td></tr>';
     });
@@ -9551,7 +9653,7 @@ function pbRenderStep2(){
   PB.groups.forEach(function(g){
     html+='<section class="pb-group pb-open" style="--pb-accent:'+g.color+'"><div class="pb-group-h pb-group-h-static"><span class="pb-group-title">'+ESC(g.key)+'</span><label class="pb-block-weight"><span>Вес блока</span><input class="pb-wt" inputmode="decimal" aria-label="Вес блока '+ESC(g.key)+'" data-blk="'+ESC(g.key)+'" value="'+pbF(PB.blockW[g.key],1)+'"><span>%</span></label></div><div class="pb-group-b">';
     html+='<div class="pb-weight-actions"><button type="button" class="pb-btn sec pb-btn-compact" data-even="'+ESC(g.key)+'">Распределить поровну</button><span class="pb-weight-status" data-blksum="'+ESC(g.key)+'"></span></div>';
-    html+='<div class="pb-bond-table-wrap"><table class="pb-bond-table pb-bond-table-weights"><colgroup><col class="pb-col-name"><col class="pb-col-isin"><col class="pb-col-ccy"><col class="pb-col-qual"><col class="pb-col-act"></colgroup><thead><tr><th>Выпуск</th><th>ISIN</th><th>Валюта</th><th>Для квалифицированных инвесторов</th><th class="pb-action-cell pb-weight-cell">Вес</th></tr></thead><tbody>';
+    html+='<div class="pb-bond-table-wrap"><table class="pb-bond-table pb-bond-table-weights"><colgroup><col class="pb-col-name"><col class="pb-col-isin"><col class="pb-col-ccy"><col class="pb-col-qual"><col class="pb-col-act"></colgroup><thead><tr><th>Выпуск</th><th>ISIN</th><th>Валюта</th><th>Для квалифици&shy;рованных инвесторов</th><th class="pb-action-cell pb-weight-cell">Вес</th></tr></thead><tbody>';
     g.bonds.forEach(function(b){html+='<tr><td class="pb-name-cell">'+ESC(b.name)+'</td><td class="pb-isin-cell">'+ESC(b.isin||'—')+'</td><td>'+ESC(b.ccy)+'</td><td>'+ESC(pbQualDisp(b))+'</td><td class="pb-action-cell pb-weight-cell"><label class="pb-bond-weight"><input class="pb-wt" inputmode="decimal" aria-label="Вес бумаги '+ESC(b.name)+'" data-bond="'+ESC(b.id)+'" value="'+pbF(PB.bondW[b.id]||0,1)+'"><span>%</span></label></td></tr>';});
     html+='</tbody></table></div></div></section>';
   });
@@ -9612,7 +9714,7 @@ function pbRenderResults(){
   html+='<div class="pb-result-metrics"><article class="pb-result-metric"><span>Групп активов</span><strong>'+P.groups.length+'</strong></article><article class="pb-result-metric"><span>Выпусков</span><strong>'+bondCount+'</strong></article></div>';
   html+='<div class="pb-result-allocation">';P.groups.forEach(function(g){html+='<div class="pb-result-allocation-item"><span class="pb-result-allocation-dot" style="background:'+g.color+'"></span><span>'+ESC(g.label)+'</span><strong>'+pbF(g.weight,1)+'%</strong></div>';});html+='</div></section><div class="pb-groups pb-result-groups">';
   P.groups.forEach(function(g){
-    html+='<section class="pb-group pb-open" style="--pb-accent:'+g.color+'"><div class="pb-group-h pb-group-h-static"><span class="pb-group-title">'+ESC(g.label)+'</span><span class="pb-group-count pb-group-weight">'+pbF(g.weight,1)+'%</span></div><div class="pb-group-b"><div class="pb-table-wrap"><table class="pb-rtable"><colgroup><col class="pb-ready-col-asset"><col class="pb-ready-col-isin"><col class="pb-ready-col-weight"><col class="pb-ready-col-yield"><col class="pb-ready-col-duration"><col class="pb-ready-col-qual"><col class="pb-ready-col-replacement"></colgroup><thead><tr><th>Бумага</th><th>ISIN</th><th class="pb-num">Вес</th><th class="pb-num">'+ESC(g.yLabel||'Доходность')+'</th><th class="pb-num">'+ESC(g.xLabel||'Дюрация')+'</th><th>Для квалифицированных инвесторов</th><th>Замена</th></tr></thead><tbody>';
+    html+='<section class="pb-group pb-open" style="--pb-accent:'+g.color+'"><div class="pb-group-h pb-group-h-static"><span class="pb-group-title">'+ESC(g.label)+'</span><span class="pb-group-count pb-group-weight">'+pbF(g.weight,1)+'%</span></div><div class="pb-group-b"><div class="pb-table-wrap"><table class="pb-rtable"><colgroup><col class="pb-ready-col-asset"><col class="pb-ready-col-isin"><col class="pb-ready-col-weight"><col class="pb-ready-col-yield"><col class="pb-ready-col-duration"><col class="pb-ready-col-qual"><col class="pb-ready-col-replacement"></colgroup><thead><tr><th>Бумага</th><th>ISIN</th><th class="pb-num">Вес</th><th class="pb-num">'+softHeader(g.yLabel||'Доходность')+'</th><th class="pb-num">'+softHeader(g.xLabel||'Дюрация')+'</th><th>Для квалифици&shy;рованных инвесторов</th><th>Замена</th></tr></thead><tbody>';
     g.bonds.forEach(function(x){var b=x.b;html+='<tr><td class="pb-ready-asset">'+ESC(b.name)+'</td><td>'+ESC(b.isin||'—')+'</td><td class="pb-num">'+pbF(x.w,1)+'%</td><td class="pb-num">'+ESC(b.yield||'—')+'</td><td class="pb-num">'+ESC(b.dur||'—')+'</td><td>'+ESC(pbQualDisp(b))+'</td><td>'+pbReplaceSelect(g.key,b.id)+'</td></tr>';});
     html+='</tbody></table></div><div class="pb-group-summary"><span>'+ESC(pbWeightedYLabel(g.yLabel,g.coupon))+' <b>'+(isFinite(g.avgY)?pbFmtAvgY(g.avgY):'—')+'</b></span><span>'+ESC(pbWeightedXLabel(g.xLabel,g.coupon))+' <b>'+(isFinite(g.avgD)?pbF(g.avgD,2):'—')+'</b></span></div></div></section>';
   });
@@ -10549,6 +10651,32 @@ window.__atonHostReady(pbInit);
     controls.insertBefore(btn,criteria||exportBtn||null);
     try{if(typeof addMarketCriteriaHelp==='function')addMarketCriteriaHelp();}catch(_eCrit){}
   }
+  function placeMarketPhoneTools(){
+    var controls=document.querySelector('#section-market .market-controls');
+    var toc=document.getElementById('toc');
+    if(!controls||!toc)return;
+    var narrow=window.matchMedia('(max-width:1200px)').matches;
+    var row=document.getElementById('marketPhoneToolRow');
+    var clearBtn=document.getElementById('marketSearchClearBtn');
+    var criteria=document.getElementById('marketCriteriaWrap');
+    var excel=document.getElementById('exportExcelBtn');
+    if(narrow){
+      if(!row){
+        row=document.createElement('div');
+        row.id='marketPhoneToolRow';
+        row.className='market-phone-tool-row';
+        toc.parentNode.insertBefore(row, toc);
+      }
+      if(toc.parentNode!==row)row.appendChild(toc);
+      [clearBtn,criteria,excel].forEach(function(el){if(el&&el.parentNode!==row)row.appendChild(el);});
+    }else if(row){
+      if(toc.parentNode===row)row.parentNode.insertBefore(toc, row);
+      if(excel)controls.appendChild(excel);
+      if(criteria)controls.insertBefore(criteria, excel||null);
+      if(clearBtn)controls.insertBefore(clearBtn, criteria||excel||null);
+      row.remove();
+    }
+  }
   function upgradeChartToolbars(){
     var globalLabels=document.getElementById('toggleLabelsBtn');
     if(globalLabels)globalLabels.remove();
@@ -10571,6 +10699,15 @@ window.__atonHostReady(pbInit);
       document.addEventListener('click',function(e){if(e.target.closest('.v2-chart-toolbar,.chart-settings-panel'))return;if(e.target.id==='chartSheetVeil'){closeChartToolbarMenus(null);return;}closeChartToolbarMenus(null);});
       document.addEventListener('keydown',function(e){if(e.key==='Escape')closeChartToolbarMenus(null);});
     }
+    if(!document.documentElement.dataset.marketPhoneTools){
+      document.documentElement.dataset.marketPhoneTools='1';
+      try{if(!document.documentElement.lang)document.documentElement.lang='ru';if(document.body&&!document.body.lang)document.body.lang='ru';}catch(_eLang){}
+      var mqTools=window.matchMedia('(max-width:1200px)');
+      var onTools=function(){try{placeMarketPhoneTools();}catch(_ePt){}};
+      if(mqTools.addEventListener)mqTools.addEventListener('change', onTools);
+      else if(mqTools.addListener)mqTools.addListener(onTools);
+    }
+    try{placeMarketPhoneTools();}catch(_ePt2){}
   }
   /* Метка сборки: по ней видно, какая версия блока реально стоит на странице
      (в админке легко залить файл и не сбросить кэш). Проверка в консоли:
