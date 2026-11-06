@@ -518,12 +518,16 @@ body.in-app .aton-tabs{display:none!important}
 #section-ideas .ideas-kv-item>b{font-size:var(--text-caption);font-weight:var(--weight-bold);color:var(--n-900);line-height:1.35}
 #section-ideas .ideas-kv-item>b.rating-purple,
 body.in-app #section-ideas .ideas-kv-item>b.rating-purple{color:#7000FF!important}
-#section-ideas .ideas-table-wrap{overflow:auto;border:1px solid color-mix(in srgb,var(--brand-700) 14%,transparent);border-radius:var(--r-md);background:var(--n-0);box-shadow:var(--sh-float)}
-#section-ideas .ideas-table{width:100%;border-collapse:collapse;font-size:var(--text-caption)}
-#section-ideas .ideas-table th{background:var(--idea-soft);color:var(--brand-700);font-weight:var(--weight-bold);text-align:left;padding:var(--space-2) var(--space-3);border-bottom:1px solid color-mix(in srgb,var(--brand-700) 14%,transparent);white-space:normal;overflow-wrap:anywhere;line-height:1.25}
-#section-ideas .ideas-table td{padding:var(--space-2) var(--space-3);border-bottom:1px solid var(--n-50);white-space:nowrap;color:var(--n-700)}
+#section-ideas .ideas-table-wrap{overflow:hidden;border:1px solid color-mix(in srgb,var(--brand-700) 14%,transparent);border-radius:var(--r-md);background:var(--n-0);box-shadow:var(--sh-float)}
+#section-ideas .ideas-table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:var(--text-caption)}
+#section-ideas .ideas-table th,
+#section-ideas .ideas-table td{vertical-align:middle;box-sizing:border-box}
+#section-ideas .ideas-table th{background:var(--idea-soft);color:var(--brand-700);font-weight:var(--weight-bold);text-align:left;padding:var(--space-2) var(--space-3);border-bottom:1px solid color-mix(in srgb,var(--brand-700) 14%,transparent);white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:manual;line-height:1.25}
+#section-ideas .ideas-table th:first-child,
+#section-ideas .ideas-table td:first-child{white-space:normal;text-align:left}
+#section-ideas .ideas-table td{padding:var(--space-2) var(--space-3);border-bottom:1px solid var(--n-50);color:var(--n-700)}
 #section-ideas .ideas-table tr:hover td{background:var(--n-25)}
-#section-ideas .ideas-table .num{text-align:right;font-variant-numeric:tabular-nums}
+#section-ideas .ideas-table .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 #section-ideas .ideas-disclaimer{margin-top:var(--space-5);padding:var(--space-3) var(--space-4);border-radius:var(--r-md);border:1px solid color-mix(in srgb,var(--brand-700) 12%,transparent);background:var(--idea-soft);color:var(--n-500);font-size:var(--text-sm);line-height:1.55}
 #section-ideas .ideas-disclaimer a{color:var(--idea-accent);text-decoration:none}
 #section-ideas .ideas-disclaimer a:hover{text-decoration:underline}
@@ -534,6 +538,7 @@ body.in-app #section-ideas .ideas-kv-item>b.rating-purple{color:#7000FF!importan
 #section-ideas .ideas-kv{grid-template-columns:1fr}
 #section-ideas .ideas-details>summary{padding:var(--space-3) var(--space-3) var(--space-3) var(--space-5)}
 #section-ideas .ideas-details-body{padding:var(--space-1) var(--space-3) var(--space-3) var(--space-5)}
+#section-ideas .ideas-table tbody td{height:4.2em}
 #section-ideas .ideas-banner .mb-inner{padding:var(--space-4) var(--space-4)}
 #section-ideas .ideas-banner .date-pill{font-size:var(--text-body);padding:var(--space-2) var(--space-3)}
 }
@@ -3915,10 +3920,8 @@ body.in-app #section-emitents .emb-table thead th.col-paper{z-index:3;background
 #emitentBazaNotice .emb-notice-close{position:absolute;top:6px;right:8px;width:28px;height:28px;border:0;background:transparent;color:var(--n-500,#6F6785);font-size:20px;line-height:1;cursor:pointer}
 /* Годы в «3 идеях» не рвутся посередине числа. На телефоне таблицы МСФО целиком внутри карточки. */
 body.in-app #section-ideas .ideas-table{width:100%!important;table-layout:fixed!important}
-body.in-app #section-ideas .ideas-table th:first-child,
-body.in-app #section-ideas .ideas-table td:first-child{width:36%!important}
 body.in-app #section-ideas .ideas-table th,
-body.in-app #section-ideas .ideas-table td{overflow-wrap:normal!important;word-break:normal!important;hyphens:manual!important}
+body.in-app #section-ideas .ideas-table td{overflow-wrap:normal!important;word-break:normal!important;hyphens:manual!important;vertical-align:middle!important}
 body.in-app #section-ideas .ideas-table th:first-child,
 body.in-app #section-ideas .ideas-table td:first-child{white-space:normal!important;text-align:left!important}
 body.in-app #section-ideas .ideas-table th:not(:first-child),
@@ -6744,6 +6747,42 @@ function ideasLiveNotes(ideas){
   return parts.join(' ');
 }
 function syncIdeasMetaUi(){const m=ideasBook().meta||{};const badge=document.querySelector('#section-ideas .ideas-badge');const date=document.getElementById('ideasDatePill');if(badge&&m.badge){var b=String(m.badge);badge.textContent=(/^trading$/i.test(b)?'Трейдинг':b);}if(date&&m.date)date.textContent=m.date;}
+function ideasTrimTable(table){
+  var cols=(table&&table.columns||[]).map(function(c){return String(c==null?'':c).trim();});
+  var rows=(table&&table.rows||[]).map(function(r){return (r||[]).map(function(c){return String(c==null?'':c).trim();});});
+  var n=cols.length;
+  rows.forEach(function(r){if(r.length>n)n=r.length;});
+  while(n>1){
+    var head=String(cols[n-1]||'').trim();
+    var empty=rows.every(function(r){return !String(r[n-1]||'').trim();});
+    if(head||!empty)break;
+    n--;
+  }
+  cols=cols.slice(0,n);
+  while(cols.length<n)cols.push('');
+  rows=rows.map(function(r){var out=r.slice(0,n);while(out.length<n)out.push('');return out;});
+  return {columns:cols,rows:rows};
+}
+function ideasTableHtml(view){
+  var trimmed=ideasTrimTable(view&&view.table);
+  var cols=trimmed.columns, rows=trimmed.rows;
+  if(!cols.length||!cols.some(function(c){return c;}))return '';
+  var nums=Math.max(cols.length-1,1);
+  var colgroup='<colgroup><col class="ideas-col-name" style="width:38%">';
+  for(var i=1;i<cols.length;i++)colgroup+='<col class="ideas-col-num" style="width:calc(62% / '+nums+')">';
+  colgroup+='</colgroup>';
+  var head='<tr>'+cols.map(function(c,i){
+    var text=i?String(c).replace(/\s+/g,'\u00a0'):c;
+    return '<th class="'+(i?'num':'')+'">'+esc(text)+'</th>';
+  }).join('')+'</tr>';
+  var body=rows.map(function(r){
+    return '<tr>'+r.map(function(c,i){
+      var text=i?c:String(c).replace(/ (₽|%|x)(?=\s|$)/g,'\u00a0$1');
+      return '<td class="'+(i?'num':'')+'">'+esc(text)+'</td>';
+    }).join('')+'</tr>';
+  }).join('');
+  return '<h4>'+esc((view&&view.tableTitle)||'Финансовые показатели')+'</h4><div class="ideas-table-wrap"><table class="ideas-table">'+colgroup+'<thead>'+head+'</thead><tbody>'+body+'</tbody></table></div>';
+}
 function renderBondIdeas(){
   const root=document.getElementById('ideasCardsRoot');
   if(!root)return;
@@ -6757,10 +6796,7 @@ function renderBondIdeas(){
     const metrics=(view.metrics||[]).map(function(m){return '<div class="ideas-metric"><span>'+esc(m.label||'')+'</span><b>'+esc(m.value||'')+'</b></div>';}).join('');
     const bullets=(view.bullets||[]).map(function(b){return '<li>'+esc(b)+'</li>';}).join('');
     const params=(view.params||[]).map(function(p){return '<div class="ideas-kv-item"><span>'+esc(p.label||'')+'</span><b'+(p.purple?' class="rating-purple"':'')+'>'+esc(p.value||'')+'</b></div>';}).join('');
-    const table=view.table||{};
-    const cols=table.columns||[];
-    const rows=table.rows||[];
-    const tableHtml=cols.length?'<h4>'+esc(view.tableTitle||'Финансовые показатели')+'</h4><div class="ideas-table-wrap"><table class="ideas-table"><thead><tr>'+cols.map(function(c,i){return '<th class="'+(i?'num':'')+'">'+esc(c)+'</th>';}).join('')+'</tr></thead><tbody>'+rows.map(function(r){return '<tr>'+(r||[]).map(function(c,i){return '<td class="'+(i?'num':'')+'">'+esc(c)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>':'';
+    const tableHtml=ideasTableHtml(view);
     return '<article class="ideas-card" id="'+esc(cardId)+'" tabindex="0" aria-expanded="false" aria-controls="'+esc(detailsId)+'" aria-label="'+esc((view.title||'Идея')+'. Подробнее о выпуске')+'"><div class="ideas-card-head"><div class="ideas-card-top"><div class="ideas-num">'+num+'</div><div class="ideas-card-title-wrap"><h2 class="ideas-card-title">'+esc(view.title||'')+'</h2>'+ideaIdRowHtml(view)+'</div></div><div class="ideas-metrics">'+metrics+'</div></div><details class="ideas-details" id="'+esc(detailsId)+'"><summary>Подробнее о выпуске</summary><div class="ideas-details-body"><h3>Почему выпуск нам нравится?</h3><ul class="ideas-bullets">'+bullets+'</ul><p class="ideas-footnote">Мнение аналитиков ООО «АТОН». Наступление указанных событий и ожиданий не гарантировано.</p><div class="ideas-kv">'+params+'</div>'+tableHtml+'</div></details></article>';
   }).join('');
   try{ensureIdeasRatingNote();}catch(_rn){}
